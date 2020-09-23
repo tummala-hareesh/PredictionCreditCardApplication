@@ -63,3 +63,22 @@
     +: 307 (44.5%)
     -: 383 (55.5%)
 
+
+
+Column id:   0 	Name: Gender       	DataType: object
+Column id:   1 	Name: Age          	DataType: object
+Column id:   2 	Name: Debt         	DataType: float64
+Column id:   3 	Name: Married      	DataType: object
+Column id:   4 	Name: BankCustomer 	DataType: object
+Column id:   5 	Name: EducationLevel 	DataType: object
+Column id:   6 	Name: Ethnicity    	DataType: object
+Column id:   7 	Name: YearsEmployed 	DataType: float64
+Column id:   8 	Name: PriorDefaulter 	DataType: object
+Column id:   9 	Name: Employed     	DataType: object
+Column id:  10 	Name: CreditScore  	DataType: int64
+Column id:  11 	Name: DriversLicense 	DataType: object
+Column id:  12 	Name: Citizen      	DataType: object
+Column id:  13 	Name: ZipCode      	DataType: object
+Column id:  14 	Name: Income       	DataType: int64
+Column id:  15 	Name: Approved     	DataType: object
+
