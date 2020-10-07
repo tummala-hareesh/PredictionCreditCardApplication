@@ -1,11 +1,12 @@
 """ 
-	utils.py: 
+	utils-gather-assess.py: 
 		- Collection of python functions used in Data Science Projects
 		- # functions: 6 
 """
 
 # Load modules
 import os 
+import pandas as pd
 
 
 def check_download(url, filename, path_data):
@@ -52,6 +53,48 @@ def show_files_in_datasets(path):
 
 
 
+def load_csv_df(path_datafile):
+    """
+       Loads a csv data file into Pandas DataFrame  
+    
+    Args:
+        path_dataset (TYPE): Path to the dataset
+        filename_dataset (TYPE): Name of the dataset file
+    
+    Returns:
+        TYPE: Pandas DataFrame 
+    """
+    return pd.read_csv(path_datafile, header=None)
+
+
+def show_features_datatypes(df):
+    """
+       Prints a table of Features and their DataTypes
+    
+    Args:
+        df (TYPE): Pandas DataFrame
+    
+    Returns:
+        None
+    """
+    for inum,icol in enumerate(df.columns):
+        print('Column id: {0:3d} \tName: {1:12s} \tDataType: {2}'.format(inum, icol, df[icol].dtypes))
 
 
 
+def drop_duplicate_rows(df):
+    """
+       Checks for duplicate rows/instances and drops the rows from dataframe
+    
+    Args:
+        df (TYPE): Pandas DataFrame
+    
+    Returns:
+        TYPE: DataFrame with no duplicates (if found!)
+    """
+
+    ndup_rows = df.duplicated().sum()
+    print('There are {} duplicated rows in the dataset.'.format(ndup_rows))
+    if (ndup_rows > 0):
+        return df.drop_duplicates().reset_index(inplace=True, drop=True)
+        print('Dropped {} rows from the dataset.'.format(ndup_rows))

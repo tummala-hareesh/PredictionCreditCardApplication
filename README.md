@@ -39,9 +39,7 @@ Three stages
 3. KNN - _knn.csv
 
 
-
 ### Models on Credit Card dataset
-
 
 
 ### Interactive Dashboard - Credit Card Applications 
