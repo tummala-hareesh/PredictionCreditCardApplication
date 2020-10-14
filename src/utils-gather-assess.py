@@ -33,7 +33,7 @@ def check_download(url, filename, path_data):
 
 
 
-def show_files_in_datasets(path):
+def show_files_datasets(path):
     """
     	Prints to terminal names of files, if present     
     """
@@ -93,7 +93,7 @@ def show_features_datatypes(df):
         print('Column id: {0:3d} \tName: {1:12s} \tDataType: {2}'.format(inum, icol, df[icol].dtypes))
 
 
-def show_feature_details(df, colname):
+def show_feature_summary(df, colname):
     """
         Prints all necessary information to fix missing data
     """
@@ -101,8 +101,8 @@ def show_feature_details(df, colname):
     print('         - datatype:',df[colname].dtypes)
     print('         - col.size:',df[colname].shape)
     print('         - NaN.vals:',df[colname].isnull().sum())
-    print('         - uniqvals:',get_uniquevalues(df, colname))
-    print('         - cnt.vals:',get_uniquecounts(df, colname))
+    print('         - uniqvals:',get_unique_values(df, colname))
+    print('         - cnt.vals:',get_unique_counts(df, colname))
 
 
 def change_feature_datatype(df, colname, dtype_new):
@@ -126,17 +126,18 @@ def replace_feature_missingvalues(df, colname, old_val):
     """
     if (old_val in df[colname].unique()):
         print(' Details of column:',colname)
-        print('      - uniqval(o):',get_uniquecounts(df, colname))
-        print('      - cnt.val(o):',get_uniquevalues(df, colname))
+        print('      - uniqval(o):',get_unique_values(df, colname))
+        print('      - cnt.val(o):',get_unique_counts(df, colname))
         
         # Replace old_val with new_val in df[colname]
+        # ---- Object Datatype -----
         if (df[colname].dtype == object):
             new_val = df[colname].value_counts(ascending=False).index[0]
-        else:
+        else: # ---- Int or Float Datatype -----
             new_val = df[colname].mean()
-        df[colname].replace(old_val, new_val,inplace=True)       
-        print('      - uniqval(n):',get_uniquecounts(df, colname))
-        print('      - cnt.val(n):',get_uniquevalues(df, colname))
+        df[colname].replace(old_val, new_val, inplace=True)       
+        print('      - uniqval(n):',get_unique_values(df, colname))
+        print('      - cnt.val(n):',get_unique_counts(df, colname))
         
     else:
         print(' Details of column:',colname)
