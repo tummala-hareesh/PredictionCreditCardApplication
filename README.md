@@ -48,22 +48,60 @@ We followed the same naming convention for the masked features/columns similar t
 | 2 |  Object  |  11   | Gender, Married, BankCustomer, EducationLevel, Ethnicity, PriorDefaulter, Employed, DriversLicense, Citizen, ZipCode, Approved |  
 
 
-
 ### Exploratory Analysis on Credit Card Data 
-- Univariate
-- Bivariate
+To get an idea about the dataset, we perform exploratory data analysis in different stages as below: 
+
+#### **Univariate Analysis**
+During this stage, we develop our first senses on the data using both non-graphical and graphical methods. Below is a bar chart showing distribution of credit card applications according to their education qualification. Further, conclusions such as the highest no. of applications are coming from applicants with education level of type c, followed by q, w, i and so on, are drawn by sorting all the education categories.  
+
+![Education Level of Credit Card Applicants](/images/uv_education.png)
+
+Histogram plots on continuous features, such as `CreditScore`  can be used to interpret the skewness of the feature data. `CreditScore` data is not normally distributed. It is heavily skewed to right.  
+
+![Credit Score of Credit Card Applicants](/images/uv_creditscore.png)
+
+#### **Bivariate Analysis**
+To understand the relationship between each categorical feature and credit card application approval rating, we take advantage of 6 different types of plots on the `Age` feature as shown below: 
+
+![Interpretation of Age of Credit Card Applicants](/images/bv_age.png)
+
+| 			Bivarite Analysis 	   | 		Types of plots			   |
+|----------------------------------|-----------------------------------|
+|![Scatter-1](/images/bv_age1.png) | ![Scatter-2](/images/bv_age2.png) |
+|![Distrib-1](/images/bv_age3.png) | ![Distrib-2](/images/bv_age4.png) |
+|![Estimat-1](/images/bv_age5.png) | ![Estimat-2](/images/bv_age6.png) |
+
+We gain vital information from every plot type. For example, Scatter plots show the distribution of each feature value, which can help in isolating irrelevant outliers. In contrast, Distrib-1 and Distrib-2 pack a lot of information. Median, IQR values and outliers (in some cases) are clearly evident in these plot types. Estimat-1 and Estimat-2 provide us with the mean age information on approved and rejected applicats. Depending on the project we work on, we are free to choose any plot that provide information needed.   
+ 
+
+#### **Multivariate Analysis**
+Additional relationship between variables is drawn from correlation heatmap and pairplot, respectively. For credit card dataset, heatmap indicates a strong correlation of Accepted applciations with CreditScore and YearsEmployed.
+
+![Correlation-Heatmap](/images/mv_corr.png)
+
+
+A step-by-step EDA performed in `2-Explore-Clean-NamedCreditCard.ipynb` notebook suggests that `CreditScore`, `Income`, `YearsEmployed`, `PriorDefaulter` are good indicators to predict the outcome of any new credit card application.  So, we make sure that these features are well addressed in our model. 
 
 
 ### Cleaning Credit Card Data
-Three stages
-1. Drop missing values - save to _drop.csv
-2. Replace - save to _replace.csv 
-3. KNN - _knn.csv
+We address missing values in the credit card dataset in three different methods. For each possible method, we build a ML model and check against a base line model.  
 
-### Models on Credit Card dataset
+1. Method of dropping rows with missing values - saved to `datasets/crx.data_drop.csv`
+In this method, we simply delete the rows with missing values. This results in an abridged dataset with XX rows for building predictive models.   
+
+2. Method of replacing missing values - saved to `datasets/crx.data_replace.csv` 
+This is one of the most commonly used methods in data science. Depending on the datatype, missing values in a column/feature are replaced with either mean/median or mode value.  
+
+3. KNN - saved to `datasets/crx.data_knn.csv`
+K-nearest neighbors method is more advanced way of dealing with missing values. In this method, we organize data into clusters and missing value are replaced from the cluster closest to the missing value's row. There are more advanced methods avaiable for dealing with missing values. But, for this project, we use the first two methods described in this section.   
+
+
+### Predictive Model for Credit Card Applications 
 Features that are identified to be related to Approval are:
 
 
+
+
 ### Try it yourself - Approval | Rejection on your Credit Card Application 
-A simple UI, where a user can input few pre-determined features and get a prediction from the model about the possibility of an approval or rejection on the credit card application.  
+A simple UI, where a user can input his/her details into the model and get a prediction on the possibility of an approval or rejection on their credit card application, is under development.  
 
