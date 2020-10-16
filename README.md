@@ -95,7 +95,7 @@ This is one of the most commonly used methods in data science. Depending on the 
 3. KNN - saved to `datasets/crx.data_knn.csv`
 K-nearest neighbors method is more advanced way of dealing with missing values. In this method, we organize data into clusters and missing value are replaced from the cluster closest to the missing value's row. There are more advanced methods avaiable for dealing with missing values. But, for this project, we use the first two methods described in this section.   
 
-
+dataframe
 ### Predictive Model for Credit Card Applications 
 Features that are identified to be related to credit card approval are used for first training, and later testing the model.
 
