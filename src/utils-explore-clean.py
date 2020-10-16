@@ -25,11 +25,23 @@ def get_version(modulename):
 
 
 
-def split_dataframe_datatypes(df):
+def split_dataframe_datatypes(df, target_var):
 	"""
-		Returns two (*-num & *_cat) dataframes from single combined dataframe 
+		Returns two (*-num, *_cat & *_target) dataframes from combined dataframe 
 	"""
-	return df.select_dtypes(include=np.number), df.select_dtypes(include=object)
+	df_num = df.select_dtypes(include=np.number)
+	df_cat = df.select_dtypes(include=object)
+
+	if target_var in df_num.columns:
+		df_tar = df_num.copy() 
+		df_tar = df_tar[[target_var]]
+		df_num.drop(columns=[target_var], axis=1, inplace=True) 
+	elif target_var in df_cat.columns:
+		df_tar = df_cat.copy()
+		df_tar = df_tar[[target_var]]
+		df_cat.drop(columns=[target_var], axis=1, inplace=True) 
+
+	return df_num,df_cat,df_tar
 
 
 def normalize_feature_zscore(df, colname):
@@ -351,7 +363,6 @@ def plot_bv_facet(df, xcolname, ycolname, ncols=3, xshareflag=False, yshareflag=
 	"""
 		Returns facet grid 
 	"""
-
 	g = sns.FacetGrid(data=df, col=ycolname
 							 , col_wrap=ncols
 							 , color=sns.color_palette()[icol]
