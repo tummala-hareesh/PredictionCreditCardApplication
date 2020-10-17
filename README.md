@@ -1,6 +1,6 @@
-# How to avoid a rejection on your credit card application ?
+# Predicting outcome on a credit card application
 
-> #### Rejection hurts...!  
+### Rejection hurts...!!!  
 ![moneytips.com](/images/moneytips_rejection.jpeg)
 Rejections are the most common emotional feeling that everyone has to sustain in daily life. Be it on an application for a basic/secured credit card or for a new premium credit card. It is human nature to expect approvals in every encounter. In this project, we are going to peform data analysis on [credit card data](https://archive.ics.uci.edu/ml/datasets/default+of+credit+card+clients) from UCI's Machine Learning Repository, construct a machine learning model that can help an applicant on `how to avoid rejections on their credit card applications`.
 
@@ -80,14 +80,14 @@ Additional relationship between variables is drawn from correlation heatmap and 
 ![Correlation-Heatmap](/images/mv_corr.png)
 
 
-A step-by-step EDA performed in `2-Explore-Clean-NamedCreditCard.ipynb` notebook suggests that `CreditScore`, `Income`, `YearsEmployed`, `PriorDefaulter` are good indicators to predict the outcome of any new credit card application.  So, we make sure that these features are well addressed in our model. 
+A step-by-step EDA performed in `2-Explore-Clean-NamedCreditCard.ipynb` notebook suggests that `CreditScore`, `Income`, `YearsEmployed`, `PriorDefaulter` are good indicators to predict the outcome of any new credit card application.  So, we make sure that these features are well addressed in our model to predict target feature.. 
 
 
 ### Cleaning Credit Card Data
-We address missing values in the credit card dataset in three different methods. For each possible method, we build a ML model and check against a base line model.  
+We address missing values in the credit card dataset in three different methods. For each possible method, we build a ML model and check against training data.  
 
 1. Method of dropping rows with missing values - saved to `datasets/crx.data_drop.csv`
-In this method, we simply delete the rows with missing values. This results in an abridged dataset with XX rows for building predictive models.   
+In this method, we simply delete the rows with missing values. This results in an abridged dataset with 653 rows for building predictive models.   
 
 2. Method of replacing missing values - saved to `datasets/crx.data_replace.csv` 
 This is one of the most commonly used methods in data science. Depending on the datatype, missing values in a column/feature are replaced with either mean/median or mode value.  
@@ -95,13 +95,13 @@ This is one of the most commonly used methods in data science. Depending on the 
 3. KNN - saved to `datasets/crx.data_knn.csv`
 K-nearest neighbors method is more advanced way of dealing with missing values. In this method, we organize data into clusters and missing value are replaced from the cluster closest to the missing value's row. There are more advanced methods avaiable for dealing with missing values. But, for this project, we use the first two methods described in this section.   
 
-
+dataframe
 ### Predictive Model for Credit Card Applications 
-Features that are identified to be related to Approval are:
+Features that are identified to be related to credit card approval are used for first training, and later testing the model.
 
 
 
 
 ### Try it yourself - Approval | Rejection on your Credit Card Application 
-A simple UI, where a user can input his/her details into the model and get a prediction on the possibility of an approval or rejection on their credit card application, is under development.  
+A simple UI, where a user can input his/her details into the model and get a prediction on the target feature, the credit card application approval/rejection, is under development.  
 
