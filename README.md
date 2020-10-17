@@ -1,4 +1,4 @@
-# How to avoid a rejection on your credit card application ?
+# Predicting outcome on a credit card application
 
 ### Rejection hurts...!!!  
 ![moneytips.com](/images/moneytips_rejection.jpeg)
