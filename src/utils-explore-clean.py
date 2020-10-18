@@ -1,6 +1,8 @@
 """ 
 	utils-explore-clean.py: Collection of python functions used in Data Science Projects
 """
+#!/usr/bin/env python3
+
 
 # Load modules
 import os 
