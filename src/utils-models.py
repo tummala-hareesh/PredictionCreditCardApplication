@@ -17,6 +17,9 @@ from sklearn.linear_model import MultiTaskElasticNet, MultiTaskLasso
 from sklearn.linear_model import HuberRegressor, RANSACRegressor, TheilSenRegressor
 from sklearn.linear_model import PoissonRegressor, TweedieRegressor, GammaRegressor
 from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.model_selection import train_test_split, cross_validate, cross_val_score
 from sklearn.metrics import mean_squared_error
@@ -73,6 +76,52 @@ def apply_standard_scaling(df):
 	df_scaled = scaler.fit_transform(df)
 
 	return df_scaled
+
+
+def get_classifiers_basic(nmodels='all', lscaler=False):
+	"""
+		Returns one of or all basic classifiers
+	"""
+	if (not lscaler):
+		# 1. Logistic Regression
+		clr1 = LogisticRegression()
+
+		# 2. SVC
+		clr2 = SVC()
+
+		# 3. Randome Forest Classfier
+		clr3 = RandomForestClassifier()
+	else:
+		# 1. Logistic Regression
+		clr1 = make_pipeline(StandardScaler(), LogisticRegression())
+
+		# 2. SVC
+		clr2 = make_pipeline(StandardScaler(), SVC())
+
+		# 3. Randome Forest Classfier
+		clr3 = make_pipeline(StandardScaler(), RandomForestClassifier())
+
+	if (nmodels == 'all'):
+		models = [clr1, clr2,clr3]
+	else:
+		models = ['clr'+str(nmodels)]
+
+	return models
+
+
+def get_classifiers_neural(nmodels='all'):
+	"""
+		Returns one of or all neural classifiers
+	"""
+	# 1. MLPClass
+	clr1 = MLPClassifier()
+
+	if (nmodels == 'all'):
+		models = [clr1]
+	else:
+		models = ['clr'+str(nmodels)]
+
+	return models
 
 
 def get_regressors_classical(nmodels='all'):
@@ -227,21 +276,30 @@ def get_train_test_dfs(feature_df, target_df, ntrain=0.33, lshuffle=True, irand=
 	return feature_train,feature_test,target_train,target_test
 
 
-def train_model(model, feature_df, target_df, nproc=2, ncv=5, ltrain=True):
+def train_model(model, feature_df, target_df, nproc=2, ncv=5, ltrain=True, typeML='classfication'):
 	"""
 		Returns mean mse and std on each model
+		- Scores end with 's'
+		- Errors end with 'e'
 	"""
-	# regression scoring metrics
-	regression_scoring_metrics = {'mse':'neg_mean_squared_error',
-								  'mae':'neg_mean_absolute_error',
-								  'r2s':'r2'}
+	if (typeML == 'classfication'):
+		# classification scoring metrics
+		scoring_metrics =  {'accs':'accuracy',
+							'f1_s':'f1',
+							'rocs':'roc_auc'}
+	elif (typeML == 'regression'):
+		# regression scoring metrics
+		scoring_metrics =  {'mse':'neg_mean_squared_error',
+							'mae':'neg_mean_absolute_error',
+							'r2s':'r2'}
+
 
 	# cross validation 
 	scores_dict = cross_validate(model, feature_df, target_df
 								, cv=ncv
 								, n_jobs=nproc
 								, return_train_score=ltrain
-								, scoring=regression_scoring_metrics)
+								, scoring=scoring_metrics)
 
 	# mean scores
 	mean_scores = {}
@@ -268,6 +326,13 @@ def get_best_model(models_scores, imetric):
 		model = min(best_model_score, key=best_model_score.get)
 
 	return model
+
+# def f_importances(coef, names):
+#     imp = coef
+#     imp,names = zip(*sorted(zip(imp,names)))
+#     plt.barh(range(len(names)), imp, align='center')
+#     plt.yticks(range(len(names)), names)
+#     plt.show()
 
 
 def print_models_metrics_scores(models_scores):
@@ -320,7 +385,7 @@ def pprint_models_metrics_scores(models_scores):
 
 	for model, metrics_scores in models_scores.items():
 		scores = list(metrics_scores.values())
-		print(table_template.format(divide_template[0], model[:20], divide_template[0]
+		print(table_template.format(divide_template[0], str(model)[:20], divide_template[0]
 											  , np.round(scores[0],8), divide_template[0]
 											  , np.round(scores[1],8), divide_template[0]
 											  , np.round(scores[2],8), divide_template[0]

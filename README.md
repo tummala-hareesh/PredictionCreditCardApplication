@@ -95,11 +95,21 @@ This is one of the most commonly used methods in data science. Depending on the 
 3. KNN - saved to `datasets/crx.data_knn.csv`
 K-nearest neighbors method is more advanced way of dealing with missing values. In this method, we organize data into clusters and missing value are replaced from the cluster closest to the missing value's row. There are more advanced methods avaiable for dealing with missing values. But, for this project, we use the first two methods described in this section.   
 
-dataframe
-### Predictive Model for Credit Card Applications 
-Features that are identified to be related to credit card approval are used for first training, and later testing the model.
+### Model for predicting outcome of Credit Card Applications 
+Since our target variable is categorical in nature, we can compare 2 or more classification models to find the best performing model. We select a linear model (`LogisticRegression`), support vector machine (`SVC`), and and ensemble (`RandomForestClassifier`) model to perform **cross_validation** and identify relavant features.   
 
 
+| Model                | fit_time     | score_time   | test_accs    | test_f1_s    | test_rocs    |
+| -------------------- | ------------ | ------------ | ------------ | ------------ | ------------ |
+| LogisticRegression() |   0.06318847 |   0.00807015 |    0.8293487 |   0.84800212 |   0.89110637 |
+| SVC()                |   0.00544707 |   0.00656327 |    0.6585684 |   0.74696658 |   0.68442674 |
+| RandomForestClassifi |   0.22017932 |   0.02792652 |   0.87087203 |   0.88246972 |   0.93674769 |
+
+
+From the attached table above, `RandomForestClassifier` outperforms the other two by a great margin showing an accuracy of ~85%. According to this ensemble model, importance features are shown in below bar chart.   
+
+
+![Features and order of importance](/images/fimportance.png)
 
 
 ### Try it yourself - Approval | Rejection on your Credit Card Application 
