@@ -16,6 +16,7 @@ from sklearn.linear_model import ARDRegression, BayesianRidge
 from sklearn.linear_model import MultiTaskElasticNet, MultiTaskLasso
 from sklearn.linear_model import HuberRegressor, RANSACRegressor, TheilSenRegressor
 from sklearn.linear_model import PoissonRegressor, TweedieRegressor, GammaRegressor
+from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.model_selection import train_test_split, cross_validate, cross_val_score
 from sklearn.metrics import mean_squared_error
@@ -63,6 +64,15 @@ def apply_encoder_label(df_cat):
 	label = encoder.fit_transform(df_cat)
 
 	return label
+
+
+def apply_standard_scaling(df):
+
+	scaler = StandardScaler()
+
+	df_scaled = scaler.fit_transform(df)
+
+	return df_scaled
 
 
 def get_regressors_classical(nmodels='all'):
@@ -241,6 +251,25 @@ def train_model(model, feature_df, target_df, nproc=2, ncv=5, ltrain=True):
 	return mean_scores
 
 
+def get_best_model(models_scores, imetric):
+	"""
+		Retuns a model with best metrics 
+	"""
+	best_model_score = {}
+	for model, metrics_scores in models_scores.items():
+		for metric, score in metrics_scores.items():
+			if (metric == imetric):
+				best_model_score[model] = score
+
+	# best scoring model 
+	if (imetric[-1] == 's'): 		# For SCORE metrics
+		model = max(best_model_score, key=best_model_score.get)
+	elif (imetric[-1] == 'e'): 		# For ERROR metrics
+		model = min(best_model_score, key=best_model_score.get)
+
+	return model
+
+
 def print_models_metrics_scores(models_scores):
 	"""
 		Prints summary of each model from models & their scores
@@ -269,32 +298,32 @@ def pprint_models_metrics_scores(models_scores):
 
 	# Intermediatory of template for table
 	for il in range(1,len_metrics_scores+1,1):
-	    # table template adaptive
-	    table_temp = ' {0}{1}:{2}{3} {4}{5}:{6}{7}'.format('{',2*il+1,12,'}','{',2*il+2,1,'}')
-	    table_template += table_temp    
+		# table template adaptive
+		table_temp = ' {0}{1}:{2}{3} {4}{5}:{6}{7}'.format('{',2*il+1,12,'}','{',2*il+2,1,'}')
+		table_template += table_temp    
 
 
 	print('\n')
 	print(table_template.format(header_template[0], header_template[1], header_template[0]
-	                                              , header_template[2], header_template[0]
-	                                              , header_template[3], header_template[0]
-	                                              , header_template[4], header_template[0]
-	                                              , header_template[5], header_template[0]                
-	                                              , header_template[6], header_template[0]))
+												  , header_template[2], header_template[0]
+												  , header_template[3], header_template[0]
+												  , header_template[4], header_template[0]
+												  , header_template[5], header_template[0]                
+												  , header_template[6], header_template[0]))
 
 	print(table_template.format(divide_template[0], 20*divide_template[1], divide_template[0]
-	                                              , 12*divide_template[1], divide_template[0]
-	                                              , 12*divide_template[1], divide_template[0]
-	                                              , 12*divide_template[1], divide_template[0]
-	                                              , 12*divide_template[1], divide_template[0]                
-	                                              , 12*divide_template[1], divide_template[0]))
+												  , 12*divide_template[1], divide_template[0]
+												  , 12*divide_template[1], divide_template[0]
+												  , 12*divide_template[1], divide_template[0]
+												  , 12*divide_template[1], divide_template[0]                
+												  , 12*divide_template[1], divide_template[0]))
 
 	for model, metrics_scores in models_scores.items():
-	    scores = list(metrics_scores.values())
-	    print(table_template.format(divide_template[0], model[:20], divide_template[0]
-	                                          , np.round(scores[0],8), divide_template[0]
-	                                          , np.round(scores[1],8), divide_template[0]
-	                                          , np.round(scores[2],8), divide_template[0]
-	                                          , np.round(scores[3],8), divide_template[0]
-	                                          , np.round(scores[4],8), divide_template[0]))
-    
+		scores = list(metrics_scores.values())
+		print(table_template.format(divide_template[0], model[:20], divide_template[0]
+											  , np.round(scores[0],8), divide_template[0]
+											  , np.round(scores[1],8), divide_template[0]
+											  , np.round(scores[2],8), divide_template[0]
+											  , np.round(scores[3],8), divide_template[0]
+											  , np.round(scores[4],8), divide_template[0]))
+	
